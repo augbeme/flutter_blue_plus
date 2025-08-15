@@ -350,6 +350,30 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
 
             result(response);
         }
+        else if ([@"getDevices" isEqualToString:call.method])
+        {
+            NSDictionary *args = (NSDictionary*) call.arguments;
+            NSMutableArray *deviceIdentifiers = [NSMutableArray new];
+            for (NSString *uuid in args[@"with_identifiers"]) {
+                [deviceIdentifiers addObject:[[NSUUID alloc] initWithUUIDString:uuid]];
+            }
+
+            // This returns devices with the specified identifiers
+            NSArray *peripherals = [self.centralManager retrievePeripheralsWithIdentifiers:deviceIdentifiers];
+
+            // Devices
+            NSMutableArray *deviceProtos = [NSMutableArray new];
+            for (CBPeripheral *p in peripherals) {
+                [deviceProtos addObject:[self bmBluetoothDevice:p]];
+            }
+
+            // See BmDevicesList
+            NSDictionary* response = @{
+                @"devices": deviceProtos,
+            };
+
+            result(response);
+        }
         else if ([@"connect" isEqualToString:call.method])
         {
             // See BmConnectRequest

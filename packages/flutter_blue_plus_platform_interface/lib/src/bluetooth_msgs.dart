@@ -733,6 +733,20 @@ class BmSystemDevicesRequest {
   }
 }
 
+class BmDevicesRequest {
+  final List<Guid> withIdentifiers;
+
+  BmDevicesRequest({
+    required this.withIdentifiers,
+  });
+
+  Map<dynamic, dynamic> toMap() {
+    final Map<dynamic, dynamic> data = {};
+    data['with_identifiers'] = withIdentifiers.map((s) => s.str).toList();
+    return data;
+  }
+}
+
 class BmDevicesList {
   final List<BmBluetoothDevice> devices;
 

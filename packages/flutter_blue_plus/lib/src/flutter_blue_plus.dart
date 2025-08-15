@@ -176,6 +176,19 @@ class FlutterBluePlus {
     return r.devices.map((d) => BluetoothDevice.fromId(d.remoteId.str)).toList();
   }
 
+  /// Retrieve a list of devices using specific identifiers (iOS only)
+  /// - [withIdentifiers] identifiers to filter devices.
+  static Future<List<BluetoothDevice>> devices(List<Guid> withIdentifiers) async {
+    var r = await _invokeMethod(
+        () => FlutterBluePlusPlatform.instance.getDevices(BmDevicesRequest(withIdentifiers: withIdentifiers)));
+    for (BmBluetoothDevice device in r.devices) {
+      if (device.platformName != null) {
+        _platformNames[device.remoteId] = device.platformName!;
+      }
+    }
+    return r.devices.map((d) => BluetoothDevice.fromId(d.remoteId.str)).toList();
+  }
+
   /// Retrieve a list of bonded devices (Android only)
   static Future<List<BluetoothDevice>> get bondedDevices async {
     var r = await _invokeMethod(() => FlutterBluePlusPlatform.instance.getBondedDevices(BmBondedDevicesRequest()));

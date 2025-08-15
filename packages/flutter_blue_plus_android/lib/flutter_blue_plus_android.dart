@@ -226,6 +226,18 @@ final class FlutterBluePlusAndroid extends FlutterBluePlusPlatform {
   }
 
   @override
+  Future<BmDevicesList> getDevices(
+    BmDevicesRequest request,
+  ) async {
+    return BmDevicesList.fromMap(
+      await _invokeMethod(
+        'getDevices',
+        request.toMap(),
+      ),
+    );
+  }
+
+  @override
   Future<bool> isSupported(
     BmIsSupportedRequest request,
   ) async {

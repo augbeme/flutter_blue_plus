@@ -192,6 +192,16 @@ abstract base class FlutterBluePlusPlatform {
     );
   }
 
+  Future<BmDevicesList> getDevices(
+    BmDevicesRequest request,
+  ) {
+    return Future.value(
+      BmDevicesList(
+        devices: const [],
+      ),
+    );
+  }
+
   Future<bool> isSupported(
     BmIsSupportedRequest request,
   ) {
